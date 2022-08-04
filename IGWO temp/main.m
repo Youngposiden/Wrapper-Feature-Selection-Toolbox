@@ -48,7 +48,7 @@
 % If all the variables have equal lower bound you can just
 % define lb and ub as two single number numbers
 
-% To run I-GWO: [Best_score,Best_pos,GWO_cg_curve]=IGWO(SearchAgents_no,Max_iteration,lb,ub,dim,fobj)
+% To run I-GWO: [Best_score,Best_pos,GWO_cg_curve] = IGWO(SearchAgents_no,Max_iteration,lb,ub,dim,fobj)
 %__________________________________________
 
 close all

@@ -1,3 +1,9 @@
+% One of the best improvements of GWO called I-GWO
+% 
+% From: https://img1.wsimg.com/blobby/go/e8abc963-7b19-40d6-a270-eed55d317dba/downloads/I-GWO.zip?ver=1602835065545
+% 
+% Modified input format to include default parameters and add to jfs
+% function
 %___________________________________________________________________%
 %  An Improved Grey Wolf Optimizer for Solving Engineering          %
 %  Problems (I-GWO) source codes version 1.0                        %
@@ -37,11 +43,23 @@
 %___________________________________________________________________%
 
 % Improved Grey Wolf Optimizer (I-GWO)
-function [Alpha_score,Alpha_pos,Convergence_curve]=IGWO(dim,N,Max_iter,lb,ub,fobj)
+function IGWO = jImprovedGreyWolfOptimization(feat,label,opts)
 
+% Parameters
+lb    = 0;
+ub    = 1; 
+thres = 0.5;
+
+if isfield(opts,'N'), N = opts.N; end
+if isfield(opts,'T'), max_Iter = opts.T; end
+if isfield(opts,'thres'), thres = opts.thres; end
+
+% Objective function
+fun = @jFitnessFunction; 
+% Number of dimensions
+dim = size(feat,2); 
 
 lu = [lb .* ones(1, dim); ub .* ones(1, dim)];
-
 
 % Initialize alpha, beta, and delta positions
 Alpha_pos=zeros(1,dim);
@@ -54,12 +72,29 @@ Delta_pos=zeros(1,dim);
 Delta_score=inf; %change this to -inf for maximization problems
 
 % Initialize the positions of wolves
-Positions=initialization(N,dim,ub,lb);
-Positions = boundConstraint (Positions, Positions, lu);
+% from initalization.m in original
+Boundary_no= size(ub,2); % numnber of boundaries
+
+% If the boundaries of all variables are equal and user enter a signle
+% number for both ub and lb
+if Boundary_no==1
+    Positions=rand(SearchAgents_no,dim).*(ub-lb)+lb;
+end
+
+% If each variable has a different lb and ub
+if Boundary_no>1
+    for i=1:dim
+        ub_i=ub(i);
+        lb_i=lb(i);
+        Positions(:,i)=rand(SearchAgents_no,1).*(ub_i-lb_i)+lb_i;
+    end
+end
+
+Positions = boundConstraint(Positions, Positions, lu);
 
 % Calculate objective function for each wolf
 for i=1:size(Positions,1)
-    Fit(i) = fobj(Positions(i,:));
+    Fit(i) = fun(Positions(i,:));
 end
 
 % Personal best fitness and position obtained by each wolf
@@ -130,7 +165,7 @@ while iter < Max_iter
             
         end
         X_GWO(i,:) = boundConstraint(X_GWO(i,:), Positions(i,:), lu);
-        Fit_GWO(i) = fobj(X_GWO(i,:));
+        Fit_GWO(i) = fun(X_GWO(i,:));
     end
     
     %% Calculate the candiadate position Xi-DLH
@@ -148,7 +183,7 @@ while iter < Max_iter
                 - Positions(r1(t),d));                      % Equation (12)
         end
         X_DLH(t,:) = boundConstraint(X_DLH(t,:), Positions(t,:), lu);
-        Fit_DLH(t) = fobj(X_DLH(t,:));
+        Fit_DLH(t) = fun(X_DLH(t,:));
     end
     
     %% Selection  
@@ -173,8 +208,33 @@ while iter < Max_iter
     neighbor = zeros(N,N);
     Convergence_curve(iter) = Alpha_score;  
 end
+% Store results
+IGWO.sf = Sf; 
+IGWO.ff = sFeat; 
+IGWO.nf = length(Sf); 
+IGWO.c  = Convergence_curve;
+IGWO.f  = feat;
+IGWO.l  = label;
 end
 
+%% boundConstraints local function
+%This function is used for L-SHADE bound checking
+function vi = boundConstraint (vi, pop, lu)
 
+% if the boundary constraint is violated, set the value to be the middle
+% of the previous value and the bound
+%
 
+[NP, D] = size(pop);  % the population size and the problem's dimension
+
+%% check the lower bound
+xl = repmat(lu(1, :), NP, 1);
+pos = vi < xl;
+vi(pos) = (pop(pos) + xl(pos)) / 2;
+
+%% check the upper bound
+xu = repmat(lu(2, :), NP, 1);
+pos = vi > xu;
+vi(pos) = (pop(pos) + xu(pos)) / 2;
+end
 
