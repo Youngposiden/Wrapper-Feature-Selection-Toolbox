@@ -37,65 +37,94 @@
 % Acc   : Accuracy of validation model
 
 
-%% Example 1: Particle Swarm Optimization (PSO) 
-clear, clc, close;
-% Number of k in K-nearest neighbor
-opts.k = 5; 
-% Ratio of validation data
-ho = 0.2;
-% Common parameter settings 
-opts.N  = 10;     % number of solutions
-opts.T  = 100;    % maximum number of iterations
-% Parameters of PSO
-opts.c1 = 2;
-opts.c2 = 2;
-opts.w  = 0.9;
-% Load dataset
-load ionosphere.mat; 
-% Divide data into training and validation sets
-HO = cvpartition(label,'HoldOut',ho); 
-opts.Model = HO; 
-% Perform feature selection 
-FS     = jfs('pso',feat,label,opts);
-% Define index of selected features
-sf_idx = FS.sf;
-% Accuracy  
-Acc    = jknn(feat(:,sf_idx),label,opts); 
-% Plot convergence
-plot(FS.c); grid on;
-xlabel('Number of Iterations');
-ylabel('Fitness Value');
-title('PSO');
+% %% Example 1: Particle Swarm Optimization (PSO) 
+% clear, clc, close;
+% % Number of k in K-nearest neighbor
+% opts.k = 5; 
+% % Ratio of validation data
+% ho = 0.2;
+% % Common parameter settings 
+% opts.N  = 10;     % number of solutions
+% opts.T  = 100;    % maximum number of iterations
+% % Parameters of PSO
+% opts.c1 = 2;
+% opts.c2 = 2;
+% opts.w  = 0.9;
+% % Load dataset
+% load ionosphere.mat; 
+% % Divide data into training and validation sets
+% HO = cvpartition(label,'HoldOut',ho); 
+% opts.Model = HO; 
+% % Perform feature selection 
+% FS     = jfs('pso',feat,label,opts);
+% % Define index of selected features
+% sf_idx = FS.sf;
+% % Accuracy  
+% Acc    = jknn(feat(:,sf_idx),label,opts); 
+% % Plot convergence
+% plot(FS.c); grid on;
+% xlabel('Number of Iterations');
+% ylabel('Fitness Value');
+% title('PSO');
+% 
+% 
+% %% Example 2: Slime Mould Algorithm (SMA) 
+% clear, clc, close;
+% % Number of k in K-nearest neighbor
+% opts.k = 5; 
+% % Ratio of validation data
+% ho = 0.2;
+% % Common parameter settings 
+% opts.N  = 10;     % number of solutions
+% opts.T  = 100;    % maximum number of iterations
+% % Load dataset
+% load ionosphere.mat; 
+% % Divide data into training and validation sets
+% HO = cvpartition(label,'HoldOut',ho); 
+% opts.Model = HO; 
+% % Perform feature selection 
+% FS     = jfs('sma',feat,label,opts);
+% % Define index of selected features
+% sf_idx = FS.sf;
+% % Accuracy  
+% Acc    = jknn(feat(:,sf_idx),label,opts); 
+% % Plot convergence
+% plot(FS.c); grid on;
+% xlabel('Number of Iterations');
+% ylabel('Fitness Value'); 
+% title('SMA');
+% 
+% 
+% %% Example 3: Whale Optimization Algorithm (WOA) 
+% clear, clc, close;
+% % Number of k in K-nearest neighbor
+% opts.k = 5; 
+% % Ratio of validation data
+% ho = 0.2;
+% % Common parameter settings 
+% opts.N = 10;     % number of solutions
+% opts.T = 100;    % maximum number of iterations
+% % Parameter of WOA
+% opts.b = 1;
+% % Load dataset
+% load ionosphere.mat; 
+% % Divide data into training and validation sets
+% HO = cvpartition(label,'HoldOut',ho); 
+% opts.Model = HO; 
+% % Perform feature selection 
+% FS     = jfs('woa',feat,label,opts);
+% % Define index of selected features
+% sf_idx = FS.sf;
+% % Accuracy  
+% Acc    = jknn(feat(:,sf_idx),label,opts); 
+% % Plot convergence
+% plot(FS.c); grid on;
+% xlabel('Number of Iterations'); 
+% ylabel('Fitness Value'); 
+% title('WOA');
 
 
-%% Example 2: Slime Mould Algorithm (SMA) 
-clear, clc, close;
-% Number of k in K-nearest neighbor
-opts.k = 5; 
-% Ratio of validation data
-ho = 0.2;
-% Common parameter settings 
-opts.N  = 10;     % number of solutions
-opts.T  = 100;    % maximum number of iterations
-% Load dataset
-load ionosphere.mat; 
-% Divide data into training and validation sets
-HO = cvpartition(label,'HoldOut',ho); 
-opts.Model = HO; 
-% Perform feature selection 
-FS     = jfs('sma',feat,label,opts);
-% Define index of selected features
-sf_idx = FS.sf;
-% Accuracy  
-Acc    = jknn(feat(:,sf_idx),label,opts); 
-% Plot convergence
-plot(FS.c); grid on;
-xlabel('Number of Iterations');
-ylabel('Fitness Value'); 
-title('SMA');
-
-
-%% Example 3: Whale Optimization Algorithm (WOA) 
+%% Example 4: IGWO
 clear, clc, close;
 % Number of k in K-nearest neighbor
 opts.k = 5; 
@@ -103,16 +132,14 @@ opts.k = 5;
 ho = 0.2;
 % Common parameter settings 
 opts.N = 10;     % number of solutions
-opts.T = 100;    % maximum number of iterations
-% Parameter of WOA
-opts.b = 1;
+opts.T = 500;    % maximum number of iterations
 % Load dataset
 load ionosphere.mat; 
 % Divide data into training and validation sets
 HO = cvpartition(label,'HoldOut',ho); 
 opts.Model = HO; 
 % Perform feature selection 
-FS     = jfs('woa',feat,label,opts);
+FS    =  jfs('igwo',feat,label,opts);
 % Define index of selected features
 sf_idx = FS.sf;
 % Accuracy  
@@ -121,7 +148,7 @@ Acc    = jknn(feat(:,sf_idx),label,opts);
 plot(FS.c); grid on;
 xlabel('Number of Iterations'); 
 ylabel('Fitness Value'); 
-title('WOA');
+title('IGWO');
 
 
 
