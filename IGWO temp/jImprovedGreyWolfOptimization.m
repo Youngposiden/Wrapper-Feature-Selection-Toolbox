@@ -92,6 +92,7 @@ end
 
 Positions = boundConstraint(Positions, Positions, lu);
 
+%% todo: update to proper feature selection version
 % Calculate objective function for each wolf
 for i=1:size(Positions,1)
     Fit(i) = fun(Positions(i,:));
@@ -106,7 +107,7 @@ Convergence_curve=zeros(1,Max_iter);
 iter = 0;% Loop counter
 
 %% Main loop
-while iter < Max_iter
+while iter < max_Iter
     for i=1:size(Positions,1)
         fitness = Fit(i);
         
@@ -217,22 +218,22 @@ IGWO.f  = feat;
 IGWO.l  = label;
 end
 
-%% boundConstraints local function
-%This function is used for L-SHADE bound checking
+%% boundConstraints local function 
+% moved from outside function
+% This function is used for L-SHADE bound checking
 function vi = boundConstraint (vi, pop, lu)
 
 % if the boundary constraint is violated, set the value to be the middle
 % of the previous value and the bound
-%
 
-[NP, D] = size(pop);  % the population size and the problem's dimension
+[NP, ~] = size(pop);  % the population size and the problem's dimension
 
-%% check the lower bound
+% check the lower bound
 xl = repmat(lu(1, :), NP, 1);
 pos = vi < xl;
 vi(pos) = (pop(pos) + xl(pos)) / 2;
 
-%% check the upper bound
+% check the upper bound
 xu = repmat(lu(2, :), NP, 1);
 pos = vi > xu;
 vi(pos) = (pop(pos) + xu(pos)) / 2;
