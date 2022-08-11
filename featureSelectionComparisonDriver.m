@@ -57,27 +57,36 @@ Function_name = 'knn'; % Name of the test function that can be from F1 to F23 (T
     %[lb,ub,dim,fobj]=Get_Functions_details(Function_name);
 
     %% move datasets here in updated version to test many at once
-    %for i=1:23
+for i=1:3
+    switch i
+        case 1
+            opts.method = 'knn'; % knn, rf, dt
+        case 2
+            opts.method = 'dt'; % knn, rf, dt
+        case 3
+            opts.method = 'rf'; % knn, rf, dt
+    end
 
     %% IGWO
-    %for j = 1:NumRun
-    [IGWO_bestfit,IGWO_bestpos,IGWO_curve] = IGWO(dim,Pop,Max_iteration,lb,ub,fobj);
-    display(['The best solution obtained by I-GWO for function ', Function_name ' is : ', num2str(IGWO_bestpos)]);
-    display(['The best optimal value of the objective funciton found by I-GWO is : ', num2str(IGWO_bestfit), newline]);
+    for j = 1:NumRun
+        IGWO = jImprovedGreyWolfOptimization(feat,label,opts);
+%     [IGWO_bestfit,IGWO_bestpos,IGWO_curve] = IGWO(dim,Pop,Max_iteration,lb,ub,fobj);
+%     display(['The best solution obtained by I-GWO for function ', Function_name ' is : ', num2str(IGWO_bestpos)]);
+%     display(['The best optimal value of the objective funciton found by I-GWO is : ', num2str(IGWO_bestfit), newline]);
     
         
     %end
     %% PSO
-
-    [Bestfit, Bestpos, PSO_CVNG] = PSO(problem, params);
-    display(['The best solution obtained by PSO for function ', Function_name ' is : ', num2str(Bestpos)]);
-    display(['The best optimal value of the objective funciton found by PSO is : ', num2str(Bestfit), newline]);
+        PSO = jParticleSwarmOptimization(feat,label,opts);
+%     [Bestfit, Bestpos, PSO_CVNG] = PSO(problem, params);
+%     display(['The best solution obtained by PSO for function ', Function_name ' is : ', num2str(Bestpos)]);
+%     display(['The best optimal value of the objective funciton found by PSO is : ', num2str(Bestfit), newline]);
     
     %% DE
-
-    [DE_curve,de_bestsol,de_bestfitness] = DE(dim,Pop,Max_iteration,lb,ub,fobj);
-    display(['The best solution obtained by DE for function ', Function_name ' is : ', num2str(de_bestsol)]);
-    display(['The best optimal value of the objective funciton found by DE is : ', num2str(de_bestfitness), newline]);
+        DE = jDifferentialEvolution(feat,label,opts);
+%     [DE_curve,de_bestsol,de_bestfitness] = DE(dim,Pop,Max_iteration,lb,ub,fobj);
+%     display(['The best solution obtained by DE for function ', Function_name ' is : ', num2str(de_bestsol)]);
+%     display(['The best optimal value of the objective funciton found by DE is : ', num2str(de_bestfitness), newline]);
     
     %% BRO 
 
@@ -159,7 +168,7 @@ Function_name = 'knn'; % Name of the test function that can be from F1 to F23 (T
     display(['The best solution obtained by HGSO for function ', Function_name ' is : ', num2str(HGSO_pos)]);
     display(['The best optimal value of the objective funciton found by HGSO is : ', num2str(HGSO_fit), newline]); 
 
-    % end
+    end
 
     %% convert everything to averages and find stddev
 
@@ -207,5 +216,5 @@ Function_name = 'knn'; % Name of the test function that can be from F1 to F23 (T
     % uncomment to save figure
     %saveas(gcf,strcat(Algorithm_Name,Function_name)); %needs changes
 
-%end
+end
 
