@@ -154,8 +154,11 @@
 %% Example 5: GWO
 
 clear, clc, close;
+opts.method = 'rf'; % knn, rf, dt
 % Number of k in K-nearest neighbor
 opts.k = 5; 
+% Number of trees in random forest
+opts.numtrees = 200; 
 % Ratio of validation data
 ho = 0.2;
 % Common parameter settings 
