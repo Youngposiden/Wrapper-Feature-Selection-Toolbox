@@ -44,14 +44,3 @@ Acc      = sum(pred == yvalid) / length(yvalid);
 error    = 1 - Acc; 
 end
 
-
-
-
-
-
-
-
-
-
-
-
