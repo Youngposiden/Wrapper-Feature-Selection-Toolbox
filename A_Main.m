@@ -124,7 +124,35 @@
 % title('WOA');
 
 
-%% Example 4: IGWO
+% %% Example 4: IGWO
+% 
+% clear, clc, close;
+% % Number of k in K-nearest neighbor
+% opts.k = 5; 
+% % Ratio of validation data
+% ho = 0.2;
+% % Common parameter settings 
+% opts.N = 10;     % number of solutions
+% opts.T = 100;    % maximum number of iterations
+% % Load dataset
+% load ionosphere.mat;
+% % Divide data into training and validation sets
+% HO = cvpartition(label,'HoldOut',ho); 
+% opts.Model = HO; 
+% % Perform feature selection 
+% FS    =  jfs('igwo',feat,label,opts);
+% % Define index of selected features
+% sf_idx = FS.sf;
+% % Accuracy  
+% Acc    = jknn(feat(:,sf_idx),label,opts); 
+% % Plot convergence
+% plot(FS.c); grid on;
+% xlabel('Number of Iterations'); 
+% ylabel('Fitness Value'); 
+% title('IGWO');
+
+%% Example 5: GWO
+
 clear, clc, close;
 % Number of k in K-nearest neighbor
 opts.k = 5; 
@@ -132,14 +160,15 @@ opts.k = 5;
 ho = 0.2;
 % Common parameter settings 
 opts.N = 10;     % number of solutions
-opts.T = 500;    % maximum number of iterations
+opts.T = 100;    % maximum number of iterations
 % Load dataset
-load ionosphere.mat; 
+load ionosphere.mat;
 % Divide data into training and validation sets
 HO = cvpartition(label,'HoldOut',ho); 
 opts.Model = HO; 
 % Perform feature selection 
-FS    =  jfs('igwo',feat,label,opts);
+fobj = @jFitnessFunction;
+FS    =  jfs('gwo',feat,label,opts);
 % Define index of selected features
 sf_idx = FS.sf;
 % Accuracy  
@@ -149,7 +178,3 @@ plot(FS.c); grid on;
 xlabel('Number of Iterations'); 
 ylabel('Fitness Value'); 
 title('IGWO');
-
-
-
-
