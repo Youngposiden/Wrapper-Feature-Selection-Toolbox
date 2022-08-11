@@ -199,10 +199,10 @@ while iter < max_Iter
     tmpPositions = tmp_rep .* X_GWO + (1-tmp_rep) .* X_DLH;
     
     %% Updating
-    tmp = pBestScore' <= tmpFit;                             % Equation (13)
-    tmp_rep = repmat(tmp',1,dim);
+    tmp = pBestScore <= tmpFit';                             % Equation (13)
+    tmp_rep = repmat(tmp,1,dim);
     
-    pBestScore = tmp .* pBestScore + (1-tmp) .* tmpFit;
+    pBestScore = tmp .* pBestScore + (1-tmp) .* tmpFit';
     pBest = tmp_rep .* pBest + (1-tmp_rep) .* tmpPositions;
     
     Fit = pBestScore;
