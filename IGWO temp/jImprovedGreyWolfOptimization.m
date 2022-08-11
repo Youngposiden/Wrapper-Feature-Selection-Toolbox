@@ -213,6 +213,10 @@ while iter < max_Iter
     neighbor = zeros(N,N);
     Convergence_curve(iter) = Alpha_score;  
 end
+% Select features based on selected index
+Pos   = 1:dim; 
+Sf    = Pos((Alpha_pos > thres) == 1);
+sFeat = feat(:,Sf);
 % Store results
 IGWO.sf = Sf; 
 IGWO.ff = sFeat; 
